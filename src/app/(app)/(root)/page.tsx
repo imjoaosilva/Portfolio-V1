@@ -17,27 +17,22 @@ export default function Page() {
 				<Socials />
 				<Projects />
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 mb-20 pt-12 md:pt-20">
-					{/* ClickCounter */}
 					<div className="col-span-1 sm:col-span-1 lg:col-span-3">
 						<ClickCounter />
 					</div>
 
-					{/* BasedIn */}
 					<div className="col-span-1 sm:col-span-1 lg:col-span-3">
 						<BasedIn />
 					</div>
 
-					{/* GitHubContributions — full width on mobile/tablet, 6 cols on desktop */}
 					<div className="col-span-1 sm:col-span-2 lg:col-span-6">
 						<GitHubContributions />
 					</div>
 
-					{/* LatestPosts */}
 					<div className="col-span-1 sm:col-span-1 lg:col-span-6 pt-2">
 						<LatestPosts />
 					</div>
 
-					{/* RecentCommits */}
 					<div className="col-span-1 sm:col-span-1 lg:col-span-6 pt-2">
 						<RecentCommits />
 					</div>

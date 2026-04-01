@@ -1,7 +1,7 @@
 export const Menu = [
 	{
 		label: "About",
-		to: "/",
+		to: "/about",
 	},
 	{
 		label: "Posts",
