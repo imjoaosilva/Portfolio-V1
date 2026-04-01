@@ -2,18 +2,24 @@
 
 import {
 	createContext,
+	type ReactNode,
 	useContext,
 	useEffect,
 	useMemo,
 	useState,
-	type ReactNode,
 } from "react";
-import { accents, type AccentName, themes, type ThemeName } from "@/config/theme";
-
-const DEFAULT_THEME: ThemeName = "macchiato";
-const DEFAULT_ACCENT: AccentName = "peach";
-const STORAGE_THEME_KEY = "joaosilva-theme";
-const STORAGE_ACCENT_KEY = "joaosilva-accent";
+import {
+	type AccentName,
+	accents,
+	type ThemeName,
+	themes,
+} from "@/config/theme";
+import {
+	DEFAULT_ACCENT,
+	DEFAULT_THEME,
+	STORAGE_ACCENT_KEY,
+	STORAGE_THEME_KEY,
+} from "@/config/theme-storage";
 
 type ThemeContextValue = {
 	accent: AccentName;
@@ -30,36 +36,57 @@ const isThemeName = (value: string | undefined): value is ThemeName =>
 const isAccentName = (value: string | undefined): value is AccentName =>
 	!!value && accents.some((item) => item.name === value);
 
+const getInitialTheme = (): ThemeName => {
+	if (typeof window === "undefined") {
+		return DEFAULT_THEME as ThemeName;
+	}
+
+	const root = document.documentElement;
+	const storedTheme = localStorage.getItem(STORAGE_THEME_KEY) ?? undefined;
+
+	if (isThemeName(storedTheme)) {
+		return storedTheme;
+	}
+
+	if (isThemeName(root.dataset.theme)) {
+		return root.dataset.theme;
+	}
+
+	return DEFAULT_THEME as ThemeName;
+};
+
+const getInitialAccent = (): AccentName => {
+	if (typeof window === "undefined") {
+		return DEFAULT_ACCENT as AccentName;
+	}
+
+	const root = document.documentElement;
+	const storedAccent = localStorage.getItem(STORAGE_ACCENT_KEY) ?? undefined;
+
+	if (isAccentName(storedAccent)) {
+		return storedAccent;
+	}
+
+	if (isAccentName(root.dataset.accent)) {
+		return root.dataset.accent;
+	}
+
+	return DEFAULT_ACCENT as AccentName;
+};
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-	const [theme, setTheme] = useState<ThemeName>(DEFAULT_THEME);
-	const [accent, setAccent] = useState<AccentName>(DEFAULT_ACCENT);
-
-	useEffect(() => {
-		const root = document.documentElement;
-		const storedTheme = localStorage.getItem(STORAGE_THEME_KEY) ?? undefined;
-		const storedAccent = localStorage.getItem(STORAGE_ACCENT_KEY) ?? undefined;
-		const initialTheme = isThemeName(storedTheme)
-			? storedTheme
-			: isThemeName(root.dataset.theme)
-				? root.dataset.theme
-				: DEFAULT_THEME;
-		const initialAccent = isAccentName(storedAccent)
-			? storedAccent
-			: isAccentName(root.dataset.accent)
-				? root.dataset.accent
-				: DEFAULT_ACCENT;
-
-		setTheme(initialTheme);
-		setAccent(initialAccent);
-	}, []);
+	const [theme, setTheme] = useState<ThemeName>(getInitialTheme);
+	const [accent, setAccent] = useState<AccentName>(getInitialAccent);
 
 	useEffect(() => {
 		document.documentElement.dataset.theme = theme;
+		document.documentElement.dataset.themeReady = "true";
 		localStorage.setItem(STORAGE_THEME_KEY, theme);
 	}, [theme]);
 
 	useEffect(() => {
 		document.documentElement.dataset.accent = accent;
+		document.documentElement.dataset.themeReady = "true";
 		localStorage.setItem(STORAGE_ACCENT_KEY, accent);
 	}, [accent]);
 
@@ -73,7 +100,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 		[accent, theme],
 	);
 
-	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+	return (
+		<ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+	);
 };
 
 export const useTheme = () => {

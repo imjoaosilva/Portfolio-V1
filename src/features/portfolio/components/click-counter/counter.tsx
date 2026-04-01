@@ -1,27 +1,121 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	getClickCounterValue,
 	hitClickCounter,
 } from "@/features/portfolio/data/click-counter";
-import type { FloatingPoint } from "@/features/portfolio/types/click-counter";
+import type {
+	ClickCounterSnapshot,
+	FloatingPoint,
+} from "@/features/portfolio/types/click-counter";
 
 const COMBO_TIMEOUT_MS = 900;
+const COUNTER_STORAGE_KEY = "joaosilva-click-counter";
+
+const readSnapshot = (): ClickCounterSnapshot => {
+	if (typeof window === "undefined") {
+		return { confirmedCount: 0, pendingClicks: 0 };
+	}
+
+	try {
+		const rawSnapshot = window.localStorage.getItem(COUNTER_STORAGE_KEY);
+
+		if (!rawSnapshot) {
+			return { confirmedCount: 0, pendingClicks: 0 };
+		}
+
+		const snapshot = JSON.parse(rawSnapshot) as Partial<ClickCounterSnapshot>;
+		const confirmedCount =
+			typeof snapshot.confirmedCount === "number" &&
+			snapshot.confirmedCount >= 0
+				? snapshot.confirmedCount
+				: 0;
+		const pendingClicks =
+			typeof snapshot.pendingClicks === "number" && snapshot.pendingClicks >= 0
+				? snapshot.pendingClicks
+				: 0;
+
+		return { confirmedCount, pendingClicks };
+	} catch {
+		return { confirmedCount: 0, pendingClicks: 0 };
+	}
+};
+
+const writeSnapshot = (snapshot: ClickCounterSnapshot) => {
+	window.localStorage.setItem(COUNTER_STORAGE_KEY, JSON.stringify(snapshot));
+};
 
 export function ClickCounterValue() {
-	const [count, setCount] = useState(0);
+	const [confirmedCount, setConfirmedCount] = useState(0);
+	const [pendingClicks, setPendingClicks] = useState(0);
 	const [key, setKey] = useState(0);
 	const [combo, setCombo] = useState(0);
 	const [floatingPoints, setFloatingPoints] = useState<FloatingPoint[]>([]);
 	const [isSyncing, setIsSyncing] = useState(true);
+	const [hasSyncIssue, setHasSyncIssue] = useState(false);
 	const comboTimeoutRef = useRef<number | null>(null);
+	const pendingClicksRef = useRef(0);
+	const isFlushingRef = useRef(false);
+
+	const count = useMemo(
+		() => confirmedCount + pendingClicks,
+		[confirmedCount, pendingClicks],
+	);
+
+	const persistSnapshot = useCallback(
+		(nextConfirmedCount: number, nextPendingClicks: number) => {
+			writeSnapshot({
+				confirmedCount: nextConfirmedCount,
+				pendingClicks: nextPendingClicks,
+			});
+		},
+		[],
+	);
+
+	const flushPendingClicks = useCallback(async () => {
+		if (isFlushingRef.current || pendingClicksRef.current === 0) {
+			return;
+		}
+
+		isFlushingRef.current = true;
+		setIsSyncing(true);
+		setHasSyncIssue(false);
+
+		try {
+			while (pendingClicksRef.current > 0) {
+				const nextValue = await hitClickCounter();
+
+				setConfirmedCount(nextValue);
+				setPendingClicks((currentPendingClicks) => {
+					const nextPendingClicks = Math.max(0, currentPendingClicks - 1);
+					pendingClicksRef.current = nextPendingClicks;
+					persistSnapshot(nextValue, nextPendingClicks);
+					return nextPendingClicks;
+				});
+			}
+		} catch {
+			setHasSyncIssue(true);
+		} finally {
+			isFlushingRef.current = false;
+			setIsSyncing(false);
+		}
+	}, [persistSnapshot]);
 
 	useEffect(() => {
 		let isMounted = true;
 
 		const loadCounter = async () => {
+			const snapshot = readSnapshot();
+
+			if (isMounted) {
+				setConfirmedCount(snapshot.confirmedCount);
+				setPendingClicks(snapshot.pendingClicks);
+				pendingClicksRef.current = snapshot.pendingClicks;
+				setKey((currentKey) => currentKey + 1);
+			}
+
 			try {
 				const value = await getClickCounterValue();
 
@@ -29,14 +123,17 @@ export function ClickCounterValue() {
 					return;
 				}
 
-				setCount(value);
+				const nextConfirmedCount = Math.max(value, snapshot.confirmedCount);
+
+				setConfirmedCount(nextConfirmedCount);
+				persistSnapshot(nextConfirmedCount, pendingClicksRef.current);
 				setKey((currentKey) => currentKey + 1);
 			} catch {
 				if (!isMounted) {
 					return;
 				}
 
-				setCount(0);
+				setHasSyncIssue(pendingClicksRef.current > 0);
 			} finally {
 				if (isMounted) {
 					setIsSyncing(false);
@@ -53,10 +150,25 @@ export function ClickCounterValue() {
 				window.clearTimeout(comboTimeoutRef.current);
 			}
 		};
-	}, []);
+	}, [persistSnapshot]);
+
+	useEffect(() => {
+		void flushPendingClicks();
+	}, [flushPendingClicks]);
+
+	useEffect(() => {
+		const handleOnline = () => {
+			setHasSyncIssue(false);
+			void flushPendingClicks();
+		};
+
+		window.addEventListener("online", handleOnline);
+		return () => {
+			window.removeEventListener("online", handleOnline);
+		};
+	}, [flushPendingClicks]);
 
 	const handleClick = async () => {
-		setCount((currentCount) => currentCount + 1);
 		setKey((currentKey) => currentKey + 1);
 		setCombo((currentCombo) => currentCombo + 1);
 		setFloatingPoints((currentPoints) => [
@@ -78,14 +190,21 @@ export function ClickCounterValue() {
 			setCombo(0);
 		}, COMBO_TIMEOUT_MS);
 
-		try {
-			const nextValue = await hitClickCounter();
-			setCount(nextValue);
-			setKey((currentKey) => currentKey + 1);
-		} catch {
-			setCount((currentCount) => Math.max(0, currentCount - 1));
-		}
+		setPendingClicks((currentPendingClicks) => {
+			const nextPendingClicks = currentPendingClicks + 1;
+			pendingClicksRef.current = nextPendingClicks;
+			persistSnapshot(confirmedCount, nextPendingClicks);
+			return nextPendingClicks;
+		});
+
+		void flushPendingClicks();
 	};
+
+	const counterStatusLabel = isSyncing
+		? "syncing"
+		: hasSyncIssue || pendingClicks > 0
+			? "offline"
+			: "global";
 
 	return (
 		<>
@@ -94,7 +213,7 @@ export function ClickCounterValue() {
 					tap to click
 				</div>
 				<span className="font-label text-[10px] text-on-surface-variant border border-on-background/30 px-1.5 py-0.5">
-					{isSyncing ? "syncing" : "global"}
+					{counterStatusLabel}
 				</span>
 			</div>
 			<button
@@ -109,12 +228,19 @@ export function ClickCounterValue() {
 							className="pointer-events-none absolute font-label text-xs uppercase tracking-widest text-primary"
 							style={{ left: `${point.left}%`, top: `${point.y}%` }}
 							initial={{ x: point.x, y: point.y, opacity: 0, scale: 0.8 }}
-							animate={{ x: point.driftX, y: point.y - 42, opacity: 1, scale: 1 }}
+							animate={{
+								x: point.driftX,
+								y: point.y - 42,
+								opacity: 1,
+								scale: 1,
+							}}
 							exit={{ opacity: 0, y: point.y - 60, x: point.driftX * 1.2 }}
 							transition={{ duration: 0.45, ease: "easeOut" }}
 							onAnimationComplete={() => {
 								setFloatingPoints((currentPoints) =>
-									currentPoints.filter((currentPoint) => currentPoint.id !== point.id),
+									currentPoints.filter(
+										(currentPoint) => currentPoint.id !== point.id,
+									),
 								);
 							}}
 						>

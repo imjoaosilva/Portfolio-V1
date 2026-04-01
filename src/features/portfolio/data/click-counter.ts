@@ -1,13 +1,7 @@
-const ABACUS_API_BASE = "https://abacus.jasoncameron.dev";
-const CLICK_COUNTER_NAMESPACE = "joaosilva";
-const CLICK_COUNTER_KEY = "click-counter";
-
-type AbacusCounterResponse = {
-	value: number;
-};
+import type { AbacusCounterResponse } from "../types/click-counter";
 
 const getCounterUrl = (action: "get" | "hit") =>
-	`${ABACUS_API_BASE}/${action}/${CLICK_COUNTER_NAMESPACE}/${CLICK_COUNTER_KEY}`;
+	`https://abacus.jasoncameron.dev/${action}/joaosilva/click-counter`;
 
 const readCounterResponse = async (response: Response) => {
 	if (!response.ok) {

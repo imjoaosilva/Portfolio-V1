@@ -5,3 +5,12 @@ export type FloatingPoint = {
 	x: number;
 	y: number;
 };
+
+export type AbacusCounterResponse = {
+	value: number;
+};
+
+export type ClickCounterSnapshot = {
+	confirmedCount: number;
+	pendingClicks: number;
+};
