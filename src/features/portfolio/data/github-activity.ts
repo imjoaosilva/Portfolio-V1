@@ -35,8 +35,6 @@ export const getGitHubActivitySummary = unstable_cache(
 					new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime(),
 			);
 
-		console.log("repos found:", repos.length);
-
 		if (!repos.length) throw new Error("No repositories found");
 
 		const [languageResults, commitResults] = await Promise.all([
