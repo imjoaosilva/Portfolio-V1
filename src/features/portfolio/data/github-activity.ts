@@ -21,7 +21,7 @@ export const getGitHubActivitySummary = unstable_cache(
 			{ headers, next: { revalidate: 86400 } },
 		);
 
-		if (!reposRes.ok) return { commits: [], languages: [] };
+		if (!reposRes.ok) throw new Error("Failed to fetch repositories");
 
 		const repos = ((await reposRes.json()) as GitHubRepo[])
 			.filter(
@@ -35,7 +35,7 @@ export const getGitHubActivitySummary = unstable_cache(
 					new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime(),
 			);
 
-		if (!repos.length) return { commits: [], languages: [] };
+		if (!repos.length) throw new Error("No repositories found");
 
 		const [languageResults, commitResults] = await Promise.all([
 			Promise.all(
@@ -98,10 +98,10 @@ export const getGitHubActivitySummary = unstable_cache(
 			.filter((c) => (seen.has(c.sha) ? false : (seen.add(c.sha), true)))
 			.sort((a, b) => b.dateMs - a.dateMs)
 			.slice(0, 5)
-			.map(({...c }) => c);
+			.map(({ dateMs: _, ...c }) => c);
 
 		return { commits, languages };
 	},
 	["github-activity-summary"],
-	{ revalidate: 86400 },
+	{ revalidate: 3600 },
 );
