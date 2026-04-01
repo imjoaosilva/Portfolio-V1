@@ -133,6 +133,16 @@
     --on-primary: #1e1e2e;
 }
 
+[data-accent="pink"] {
+    --primary: #f4b8e4;
+    --on-primary: #1e1e2e;
+}
+
+.accent-pink {
+    --primary: #f4b8e4;
+    --on-primary: #1e1e2e;
+}
+
 [data-accent="peach"] {
     --primary: #fab387;
     --on-primary: #1e1e2e;

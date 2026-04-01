@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Inter, Mono, spaceGrotesk } from "@/libs/fonts";
+import { cn } from "@/utils/cn";
+
+const jetbrainsMono = JetBrains_Mono({
+	subsets: ["latin"],
+	variable: "--font-mono",
+});
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -25,7 +31,16 @@ export default function RootLayout({
 			lang="en"
 			data-theme="macchiato"
 			data-accent="peach"
-			className={`${geistSans.variable} ${Mono.variable} ${Inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+			className={cn(
+				"h-full",
+				"antialiased",
+				geistSans.variable,
+				Mono.variable,
+				Inter.variable,
+				spaceGrotesk.variable,
+				"font-mono",
+				jetbrainsMono.variable,
+			)}
 		>
 			<head>
 				<link
