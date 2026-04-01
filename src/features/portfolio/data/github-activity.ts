@@ -103,5 +103,5 @@ export const getGitHubActivitySummary = unstable_cache(
 		return { commits, languages };
 	},
 	["github-activity-summary"],
-	{ revalidate: 3600 },
+	{ revalidate: 3600 }, // Cache for 1 hour
 );

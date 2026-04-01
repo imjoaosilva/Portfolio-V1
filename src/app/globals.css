@@ -36,7 +36,9 @@
     --secondary: #7c7f93;
     --secondary-rgb: 124 127 147;
     --surface: #dce0e8;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-mono:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
 }
 
 [data-theme="latte"] {
@@ -184,8 +186,10 @@ body {
 
 body {
     cursor: crosshair;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--bg);
 }
-
 
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {

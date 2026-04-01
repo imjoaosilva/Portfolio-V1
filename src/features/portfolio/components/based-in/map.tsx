@@ -92,15 +92,17 @@ export function BasedInMap() {
 		let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
 		void import("leaflet").then((leaflet) => {
-			if ((container as HTMLDivElement & { _leaflet_id?: number })._leaflet_id) {
+			if (
+				(container as HTMLDivElement & { _leaflet_id?: number })._leaflet_id
+			) {
 				return;
 			}
 
 			const map = leaflet.map(container, {
 				attributionControl: false,
 				center: [LAT, LNG],
-				dragging: false,
-				scrollWheelZoom: false,
+				dragging: true,
+				scrollWheelZoom: true,
 				zoom: 12,
 				zoomControl: false,
 			});
