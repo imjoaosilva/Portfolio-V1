@@ -6,19 +6,19 @@ export const SOCIAL_LINKS: SocialLink[] = [
 	{
 		Icon: FaGithub,
 		title: "GitHub",
-		description: "ncdai",
+		description: "imjoaosilva",
 		href: "https://github.com/imjoaosilva",
 	},
 	{
 		Icon: FaLinkedinIn,
 		title: "LinkedIn",
-		description: "ncdai",
-		href: "https://linkedin.com/in/ncdai",
+		description: "João Silva",
+		href: "https://linkedin.com/in/imjoaosilva",
 	},
 	{
 		Icon: SiDailydotdev,
 		title: "daily.dev",
-		description: "@ncdai",
-		href: "https://app.daily.dev/ncdai",
+		description: "@imjoaosilva",
+		href: "https://app.daily.dev/imjoaosilva",
 	},
 ];

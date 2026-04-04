@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -8,31 +7,62 @@ import { cn } from "@/utils/cn";
 
 export const SiteHeader = () => {
 	const pathname = usePathname();
+	const segments = pathname === "/" ? [] : pathname.split("/").filter(Boolean);
 
 	return (
-		<header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-background/90 backdrop-blur-md border-b border-on-background/20 transition-colors duration-300">
-			<div className="flex items-center">
-				<div className="font-label text-sm font-medium leading-none tracking-tight text-primary ">
+		<header className="fixed top-0 z-50 flex h-14 w-full items-center justify-between border-b border-on-background/20 bg-background/90 px-6 backdrop-blur-md transition-colors duration-300">
+			<div className="flex items-center font-label text-sm font-medium leading-none tracking-tight">
+				<Link
+					href="/"
+					className="text-primary transition-colors hover:text-primary/70"
+					aria-label="Go to home"
+				>
 					~
-				</div>
-				<div className="font-label text-sm font-medium leading-none tracking-tight text-on-background/90 ml-px">
-					{pathname}
-				</div>
-				<div className="h-3.5 w-1 shrink-0 bg-primary/70 ml-1" />
+				</Link>
+
+				{segments.length === 0 ? (
+					<span className="ml-px text-on-background/90">/</span>
+				) : (
+					segments.map((seg, i) => {
+						const segPath = `/${segments.slice(0, i + 1).join("/")}`;
+						const isLast = i === segments.length - 1;
+
+						return (
+							<span key={segPath} className="flex items-center">
+								<span className="ml-px">/</span>
+								{isLast ? (
+									<span className="ml-px text-on-background">{seg}</span>
+								) : (
+									<Link
+										href={segPath}
+										className="ml-px text-on-background transition-colors hover:text-primary"
+									>
+										{seg}
+									</Link>
+								)}
+							</span>
+						);
+					})
+				)}
+
+				<div className="ml-1 h-3.5 w-1 shrink-0 bg-primary/70" />
 			</div>
 
-			<nav className="hidden md:flex gap-8 items-center h-full">
+			<nav className="hidden h-full items-center gap-8 md:flex">
 				{Menu.map((item) => {
-					const isSelected = item.to === pathname;
-
+					const isSelected = pathname === item.to;
+					const isChildRoute =
+						item.to !== "/" && pathname.startsWith(`${item.to}/`);
 					return (
 						<Link
 							key={item.label}
 							className={cn(
-								"font-mono text-sm tracking-tight font-medium uppercase h-full flex items-center transition-colors",
+								"flex h-full items-center font-mono text-sm font-medium uppercase tracking-tight transition-colors",
 								isSelected
 									? "border-b-2 border-primary text-primary"
-									: "text-on-surface-variant hover:text-on-background",
+									: isChildRoute
+										? "text-primary/80 hover:text-primary"
+										: "text-on-surface-variant hover:text-on-background",
 							)}
 							href={item.to}
 						>
@@ -41,6 +71,7 @@ export const SiteHeader = () => {
 					);
 				})}
 			</nav>
+
 			<div className="flex items-center gap-4">
 				<ThemeToggle />
 			</div>

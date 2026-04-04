@@ -4,8 +4,8 @@ export const Menu = [
 		to: "/about",
 	},
 	{
-		label: "Posts",
-		to: "/posts",
+		label: "Blog",
+		to: "/blog",
 	},
 	{
 		label: "Projects",

@@ -1,0 +1,28 @@
+---
+title: Projetando sistemas que envelhecem bem
+description: Notas sobre escolher limites, regras de nomeação e interfaces que continuam fazendo sentido quando o código dobra de tamanho.
+publishedAt: 2026-04-02
+updatedAt: 2026-04-02
+readTime: 6 min de leitura
+category: Architecture
+tags:
+  - systems
+  - architecture
+  - scaling
+image: https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80
+pinned: true
+---
+
+A maioria dos sistemas não falha porque a primeira versão era feia. Eles falham porque a segunda, terceira e quarta versões foram adicionadas sem um centro estável. Uma boa arquitetura tem menos a ver com abstrações perfeitas e mais com tornar a mudança futura algo sem drama.
+
+## Comece pelos substantivos
+
+Quando começo uma nova superfície de produto, eu procuro os substantivos que precisam sobreviver aos refactors: os objetos de domínio, os eventos que importam e os contratos em que outras partes do app podem se apoiar. Isso vira a espinha dorsal. Todo o resto pode continuar flexível.
+
+## Separe regra de apresentação
+
+Uma regra prática que sempre compensa é isolar política de apresentação. Componentes devem descrever experiência. Módulos de dados devem descrever verdade. Quando essas duas coisas vazam uma para a outra, as features ficam difíceis de mover e ainda mais difíceis de testar.
+
+## Prefira composição a exceções
+
+Os sistemas que parecem fáceis de manter normalmente compartilham uma característica: novas features entram por composição, não por exceções. Isso significa menos casos especiais, menos props soltas e ownership mais claro dentro do código.

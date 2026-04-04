@@ -1,0 +1,25 @@
+---
+title: Entregando estados de frontend melhores
+description: Loading, empty, success e failure também são design de produto. Tratar isso dessa forma deixa a interface muito mais intencional.
+publishedAt: 2026-03-25
+updatedAt: 2026-03-25
+readTime: 7 min de leitura
+category: Frontend
+tags:
+  - frontend
+  - ux
+  - react
+image: https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80
+---
+
+A forma mais fácil de fazer uma interface polida parecer inacabada é desenhar só o happy path. As pessoas percebem primeiro as bordas: o spinner que nunca muda, a mensagem de erro que não ajuda e o estado vazio que parece acidental.
+
+## Trate o assíncrono como máquina de estados
+
+Eu gosto de tratar toda fronteira assíncrona como uma pequena máquina de estados. O que a pessoa vê antes dos dados chegarem? O que acontece quando não existe dado? E quando só parte dele chegou? Quando esses estados ficam explícitos, a estrutura do componente costuma ficar mais simples, não mais complexa.
+
+## Divida responsabilidade com honestidade
+
+Em apps com Next, muita clareza vem de separar bem as responsabilidades. Server components podem buscar e moldar os dados. Partes menores e visuais podem focar em renderizar cada estado sem precisar controlar o fluxo inteiro.
+
+O resultado não é só uma UX melhor. Também reduz condicionais espalhadas pela árvore. O componente começa a parecer uma especificação de produto, não uma sequência de remendos defensivos.

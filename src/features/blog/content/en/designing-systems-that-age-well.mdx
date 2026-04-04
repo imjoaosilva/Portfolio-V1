@@ -1,0 +1,28 @@
+---
+title: Designing systems that age well
+description: Notes on choosing boundaries, naming rules, and interfaces that still make sense when a codebase doubles in size.
+publishedAt: 2026-04-02
+updatedAt: 2026-04-02
+readTime: 6 min read
+category: Architecture
+tags:
+  - systems
+  - architecture
+  - scaling
+image: https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80
+pinned: true
+---
+
+Most systems do not fail because the first version was ugly. They fail because the second, third, and fourth versions were added without a stable center. A good architecture is less about perfect abstractions and more about making future change boring.
+
+## Start with the nouns
+
+When I start a new product surface, I look for the nouns that should survive refactors: the domain objects, the events we care about, and the contracts other parts of the app can lean on. Those become the spine. Everything else stays flexible.
+
+## Keep policy away from paint
+
+A practical rule that keeps paying off is to isolate policy from presentation. Components should describe experience. Data modules should describe truth. If both concerns leak into each other, features become hard to move and even harder to test.
+
+## Prefer composition over exceptions
+
+The systems that feel easy to maintain usually share one trait: they let new features arrive by composition instead of exceptions. That means fewer special cases, fewer one-off props, and clearer ownership across the codebase.
