@@ -1,0 +1,56 @@
+---
+title: "Aprenda Cybersegurança comigo"
+description: "Recentemente comecei a estudar segurança e decidi compartilhar o que venho aprendendo, tanto para mim quanto para você."
+publishedAt: "2026-04-05"
+updatedAt: "2026-04-05"
+readTime: "8 min"
+category: "Cybersecurity"
+tags:
+  - cybersecurity
+image: "https://images.unsplash.com/photo-1660644807804-ffacfd7a4137?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0"
+---
+
+Hoje em dia, com a evolução das inteligências artificiais e a crescente preocupação com privacidade, decidi expandir o meu conhecimento em segurança.
+
+Este é o meu primeiro post sobre o tema, então ainda há muito espaço para evolução tanto no conteúdo quanto na forma como explico as coisas 🙂
+
+## Hack The Box
+
+O [Hack The Box](https://www.hackthebox.com/) é uma plataforma de aprendizagem focada em segurança ofensiva, com desafios práticos que simulam cenários reais.
+
+Neste post, vou compartilhar a minha experiência inicial com a plataforma e como ela está me ajudando a melhorar em cybersecurity.
+
+### XSS
+
+O [Cross-Site Scripting](https://owasp.org/www-community/attacks/xss/) é uma vulnerabilidade que permite que um atacante execute scripts maliciosos em uma página web. Existem três tipos de XSS: Reflected, Stored e DOM-based.
+
+#### Reflected XSS
+
+O Reflected XSS ocorre quando uma entrada maliciosa é refletida de volta para o usuário, geralmente através de uma URL ou formulário. O atacante pode injetar código malicioso na entrada e quando o usuário acessa a página, o código é executado no contexto do usuário.
+
+#### Stored XSS
+
+O Stored XSS ocorre quando uma entrada maliciosa é armazenada no servidor e exibida para outros usuários. O atacante pode injetar código malicioso em uma entrada e quando outros usuários acessam a página, o código é executado no contexto do usuário.
+
+#### DOM-based XSS
+
+O DOM-based XSS ocorre quando uma entrada maliciosa é injetada no DOM do navegador. O atacante pode injetar código malicioso em uma entrada e quando o usuário acessa a página, o código é executado no contexto do usuário.
+
+#### CSRF
+
+O [Cross-Site Request Forgery](https://owasp.org/www-community/attacks/csrf/) é uma vulnerabilidade que permite que um atacante execute ações maliciosas em nome do usuário sem que ele perceba. O atacante pode criar uma requisição maliciosa e enviar para o usuário, que irá executá-la sem saber.
+Hoje em dia, a maioria dos navegadores implementa medidas de segurança para evitar CSRF, como o uso de tokens de segurança e a verificação de origem das requisições. No entanto, é importante lembrar que não existem medidas 100% eficazes e que é necessário sempre validar e sanitizar entradas do usuário.
+
+**Sanitização** -> Remover caracteres especiais e caracteres não padronizados no input do usuário antes de exibir ou armazenar.
+
+**Validação** -> Verificar se a entrada do usuário está dentro de um conjunto de valores esperados. (Por exemplo, verificar se o email é válido)
+
+
+## CVE
+CVE (Common Vulnerabilities and Exposures) é um banco de dados de vulnerabilidades e exposições comuns. Ele é mantido pelo [OWASP](https://owasp.org/) e é usado para classificar e rastrear vulnerabilidades em software.
+
+### CVSS
+
+O [CVSS](https://www.first.org/cvss/) é um sistema de pontuação que avalia o impacto de vulnerabilidades em sistemas de segurança. Atualmente ele possui 4 versões, sendo a mais confiável a versão 4.0 (a mais recente).
+O motivo da diferença entre as versões é que cada uma tem suas próprias métricas e pesos, o que pode levar a resultados diferentes para a mesma vulnerabilidade.
+Cada versão possui uma escala diferente de pontuação, sendo a versão 4.0 a mais recente e confiável.
