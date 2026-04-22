@@ -1,4 +1,3 @@
-import { VscGitCommit } from "react-icons/vsc";
 import {
 	getCommitColor,
 	getLanguageColor,
@@ -10,7 +9,7 @@ export async function RecentCommitsList() {
 
 	return (
 		<>
-			<div className="min-h-0 max-h-40 flex-1 flex flex-col divide-y divide-on-background/10 overflow-y-auto font-mono">
+			<div className="min-h-0 max-h-64 flex-1 divide-y divide-border overflow-y-auto font-mono">
 				{commits.length ? (
 					commits.map((commit) => (
 						<a
@@ -18,22 +17,24 @@ export async function RecentCommitsList() {
 							href={commit.url}
 							target="_blank"
 							rel="noreferrer"
-							className="px-4 py-2.5 flex items-center gap-3 hover:bg-surface-container transition-colors group"
+							className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-bg-raised"
 						>
-							<VscGitCommit
-								size={14}
-								style={{ color: getCommitColor(commit.message), flexShrink: 0 }}
-							/>
+							<span
+								className="shrink-0 text-xs"
+								style={{ color: getCommitColor(commit.message) }}
+							>
+								●
+							</span>
 							<div className="min-w-0 flex-1">
-								<div className="text-xs truncate">{commit.message}</div>
-								<div className="mt-1 flex items-center gap-2 text-[10px] text-on-surface-variant">
+								<div className="truncate text-xs text-fg">{commit.message}</div>
+								<div className="mt-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-fg-dim">
 									<span>{commit.repo}</span>
 									<span className="opacity-50">/</span>
 									<span>{commit.time}</span>
 								</div>
 							</div>
 							<span
-								className="text-[10px] border border-on-background/30 px-1.5 py-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+								className="shrink-0 border border-border px-2 py-1 text-[10px] uppercase tracking-[0.16em] opacity-0 transition-opacity group-hover:opacity-100"
 								style={{ color: getCommitColor(commit.message) }}
 							>
 								{commit.sha.slice(0, 7)}
@@ -41,23 +42,23 @@ export async function RecentCommitsList() {
 						</a>
 					))
 				) : (
-					<div className="px-4 py-6 text-sm text-on-surface-variant">
+					<div className="px-4 py-6 text-sm text-fg-dim">
 						No recent public commits found.
 					</div>
 				)}
 			</div>
 
-			<div className="border-t border-on-background/20 px-4 pt-8 pb-3 space-y-2.5">
+			<div className="space-y-2.5 border-t border-border px-4 pb-3 pt-4">
 				<div className="flex items-center justify-between">
-					<span className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+					<span className="text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 						language share
 					</span>
-					<span className="font-mono text-[10px] text-on-surface-variant">
+					<span className="text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 						public repos
 					</span>
 				</div>
 
-				<div className="flex h-2 overflow-hidden border border-on-background/20 bg-background">
+				<div className="flex h-2 overflow-hidden border border-border bg-background">
 					{languages.map((language) => (
 						<div
 							key={language.name}
@@ -75,10 +76,10 @@ export async function RecentCommitsList() {
 					{languages.map((language) => (
 						<div
 							key={language.name}
-							className="border border-on-background/20 bg-background px-2 py-0.5 text-[10px] font-label uppercase"
+							className="border border-border bg-background px-2 py-1 text-[10px] uppercase tracking-[0.14em]"
 						>
 							<span
-								className="inline-block h-2 w-2 mr-1.5"
+								className="mr-1.5 inline-block h-2 w-2"
 								style={{ backgroundColor: getLanguageColor(language.name) }}
 							/>
 							<span className="text-on-background">{language.name}</span>{" "}
@@ -96,21 +97,21 @@ export async function RecentCommitsList() {
 export function RecentCommitsListFallback() {
 	return (
 		<>
-			<div className="flex-1 px-4 py-4 space-y-3">
+			<div className="flex-1 space-y-3 px-4 py-4">
 				{Array.from({ length: 4 }).map((_, index) => (
 					<div
 						key={index}
-						className="h-11 border border-on-background/10 bg-surface-container-highest/60 animate-pulse"
+						className="h-11 border border-border bg-bg-raised animate-pulse"
 					/>
 				))}
 			</div>
-			<div className="border-t border-on-background/20 px-4 py-3 space-y-3">
-				<div className="h-2 border border-on-background/20 bg-surface-container-highest/60 animate-pulse" />
+			<div className="space-y-3 border-t border-border px-4 py-3">
+				<div className="h-2 border border-border bg-bg-raised animate-pulse" />
 				<div className="flex gap-2">
 					{Array.from({ length: 3 }).map((_, index) => (
 						<div
 							key={index}
-							className="h-6 w-20 border border-on-background/10 bg-surface-container-highest/60 animate-pulse"
+							className="h-6 w-20 border border-border bg-bg-raised animate-pulse"
 						/>
 					))}
 				</div>

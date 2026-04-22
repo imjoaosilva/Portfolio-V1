@@ -208,24 +208,24 @@ export function ClickCounterValue() {
 
 	return (
 		<>
-			<div className="px-4 pt-4 flex items-center justify-between">
-				<div className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">
+			<div className="flex items-center justify-between px-4 pt-4">
+				<div className="text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 					tap to click
 				</div>
-				<span className="font-label text-[10px] text-on-surface-variant border border-on-background/30 px-1.5 py-0.5">
+				<span className="border border-border px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 					{counterStatusLabel}
 				</span>
 			</div>
 			<button
 				type="button"
 				onClick={handleClick}
-				className="relative overflow-hidden flex-1 flex flex-col items-center justify-center gap-3 p-6 group cursor-pointer"
+				className="group relative flex flex-1 cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden p-6"
 			>
 				<AnimatePresence>
 					{floatingPoints.map((point) => (
 						<motion.span
 							key={point.id}
-							className="pointer-events-none absolute font-label text-xs uppercase tracking-widest text-primary"
+							className="pointer-events-none absolute text-xs uppercase tracking-[0.18em] text-primary"
 							style={{ left: `${point.left}%`, top: `${point.y}%` }}
 							initial={{ x: point.x, y: point.y, opacity: 0, scale: 0.8 }}
 							animate={{
@@ -253,7 +253,7 @@ export function ClickCounterValue() {
 					{combo > 1 ? (
 						<motion.span
 							key={combo}
-							className="absolute top-4 right-4 font-label text-[10px] uppercase tracking-[0.22em] text-primary"
+							className="absolute right-4 top-4 text-[10px] uppercase tracking-[0.22em] text-primary"
 							initial={{ opacity: 0, y: 8 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
@@ -267,7 +267,7 @@ export function ClickCounterValue() {
 				<AnimatePresence mode="popLayout">
 					<motion.span
 						key={key}
-						className="font-headline text-6xl font-black tabular-nums"
+						className="font-headline text-6xl tabular-nums text-fg"
 						initial={{ y: -20, opacity: 0 }}
 						animate={{ y: 0, opacity: 1 }}
 						exit={{ y: 20, opacity: 0 }}
@@ -277,13 +277,13 @@ export function ClickCounterValue() {
 					</motion.span>
 				</AnimatePresence>
 				<motion.div
-					className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant group-hover:text-primary transition-colors"
+					className="text-[10px] uppercase tracking-[0.18em] text-fg-dim transition-colors group-hover:text-primary"
 					whileTap={{ scale: 0.95 }}
 				>
 					tap to click →
 				</motion.div>
 			</button>
-			<div className="h-[2px] bg-on-background/10">
+			<div className="h-[2px] bg-border">
 				<motion.div
 					className="h-full bg-primary"
 					animate={{ width: `${Math.min((count / 100) * 100, 100)}%` }}

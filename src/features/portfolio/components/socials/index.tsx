@@ -1,15 +1,28 @@
 "use client";
 
-import { motion } from "motion/react";
 import { SOCIAL_LINKS } from "../../data/social-links";
-import { SocialItem } from "./social-item";
 
 export const Socials = () => {
 	return (
-		<motion.div className="flex flex-row items-center gap-4 mt-7">
-			{SOCIAL_LINKS.map((link) => (
-				<SocialItem key={link.title} {...link} />
-			))}
-		</motion.div>
+		<section className="void-divider pb-6 md:pb-8">
+			<div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+				<div className="void-section-title">elsewhere</div>
+				<div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-fg-dim">
+					{SOCIAL_LINKS.map((link) => (
+						<a
+							key={link.title}
+							href={link.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="void-link no-underline transition-colors hover:text-primary"
+						>
+							<span className="text-fg">{link.title.toLowerCase()}</span>
+							{" · "}
+							{link.description}
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
 	);
 };

@@ -51,25 +51,26 @@ export const ThemeToggle = () => {
 		<div ref={containerRef} className="relative flex items-center">
 			<button
 				type="button"
+				suppressHydrationWarning
 				aria-label={`Open theme switcher, current theme ${theme}`}
 				aria-expanded={isOpen}
 				aria-haspopup="menu"
 				title={`Theme: ${theme}`}
 				onClick={() => setIsOpen((open) => !open)}
-				className="material-symbols-outlined text-on-surface-variant hover:text-primary scale-95 active:scale-90 transition-transform"
+				className="border border-border px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-fg-dim transition-colors hover:border-primary hover:text-primary"
 			>
-				grid_view
+				theme
 			</button>
 
 			{isOpen && (
 				<motion.div
 					role="menu"
-					className="absolute right-0 top-[calc(100%+10px)] min-w-52 border border-on-background bg-background/95 p-1.5 backdrop-blur-md shadow-[4px_4px_0px_0px_currentColor]"
+					className="absolute right-0 top-[calc(100%+10px)] min-w-56 border border-border bg-bg-panel/95 p-1.5 backdrop-blur-md"
 					key={`${isOpen}`}
 					initial={{ scale: 0, opacity: 0.5 }}
 					animate={{ scale: 1, opacity: 1 }}
 				>
-					<div className="px-2 py-1 font-label text-[10px] uppercase tracking-[0.18em] text-on-surface-variant">
+					<div className="px-2 py-1 font-label text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 						Themes
 					</div>
 					<div className="space-y-1">
@@ -83,26 +84,26 @@ export const ThemeToggle = () => {
 									role="menuitem"
 									onClick={() => handleThemeChange(item)}
 									className={cn(
-										"flex w-full items-center justify-between px-2 py-2 text-left font-label text-xs uppercase transition-colors",
+										"flex w-full items-center justify-between px-2 py-2 text-left font-label text-[11px] uppercase tracking-[0.12em] transition-colors",
 										isActive
-											? "bg-primary text-background"
-											: "text-on-background hover:bg-surface-container-highest",
+											? "bg-primary text-black"
+											: "text-on-background hover:bg-bg-raised",
 									)}
 								>
 									<span>{item}</span>
 									<span
 										className={cn(
-											"material-symbols-outlined text-sm leading-none",
+											"text-sm leading-none",
 											isActive ? "opacity-100" : "opacity-0",
 										)}
 									>
-										check_small
+										✓
 									</span>
 								</button>
 							);
 						})}
 					</div>
-					<div className="mt-2 border-t border-on-background/15 px-2 py-2 font-label text-[10px] uppercase tracking-[0.18em] text-on-surface-variant">
+					<div className="mt-2 border-t border-border px-2 py-2 font-label text-[10px] uppercase tracking-[0.18em] text-fg-dim">
 						Accent
 					</div>
 					<div className="grid grid-cols-4 gap-2 px-2 pb-1">
@@ -117,10 +118,10 @@ export const ThemeToggle = () => {
 									title={item.name}
 									onClick={() => handleAccentChange(item.name)}
 									className={cn(
-										"h-6 w-6 border border-on-background transition-transform hover:scale-105",
+										"h-6 w-6 border border-border transition-transform hover:scale-105",
 										item.swatchClass,
 										isActive
-											? "ring-2 ring-on-background ring-offset-2 ring-offset-background"
+											? "ring-1 ring-primary ring-offset-2 ring-offset-background"
 											: "",
 									)}
 								/>

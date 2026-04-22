@@ -2,7 +2,6 @@
 
 import { format } from "date-fns";
 import { use } from "react";
-import { BiLoaderCircle } from "react-icons/bi";
 
 import {
 	TooltipContent,
@@ -31,7 +30,7 @@ export function GitHubContributionGraph({
 	return (
 		<TooltipProvider>
 			<ContributionGraph
-				className="mx-auto py-2"
+				className="mx-auto py-2 text-[11px] text-fg-dim"
 				data={data}
 				blockSize={11}
 				blockMargin={3}
@@ -54,7 +53,7 @@ export function GitHubContributionGraph({
 								/>
 							</TooltipTrigger>
 
-							<TooltipContent className="font-sans">
+							<TooltipContent className="font-mono">
 								<p>
 									{activity.count} contribution{activity.count > 1 ? "s" : null}{" "}
 									on {format(new Date(activity.date), "dd.MM.yyyy")}
@@ -67,10 +66,10 @@ export function GitHubContributionGraph({
 				<ContributionGraphFooter className="px-2">
 					<ContributionGraphTotalCount>
 						{({ totalCount, year }) => (
-							<div>
+							<div className="text-xs text-fg-dim">
 								{totalCount.toLocaleString("en")} contributions in {year} on{" "}
 								<a
-									className="font-medium underline underline-offset-4"
+									className="void-link text-primary"
 									href={`https://github.com/${USER_DATA.github_username}`}
 									target="_blank"
 									rel="noopener"
@@ -91,8 +90,8 @@ export function GitHubContributionGraph({
 
 export function GitHubContributionFallback() {
 	return (
-		<div className="flex h-40.5 w-full items-center justify-center">
-			<BiLoaderCircle className="animate-spin text-muted-foreground" />
+		<div className="flex h-40.5 w-full items-center justify-center text-xs uppercase tracking-[0.18em] text-fg-dim">
+			loading contribution graph
 		</div>
 	);
 }

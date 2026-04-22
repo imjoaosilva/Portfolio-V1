@@ -1,27 +1,30 @@
 import Link from "next/link";
-import { IoMdArrowForward } from "react-icons/io";
 import { FEATURED_PROJECTS } from "../../data/projects";
 import { ProjectCard } from "./project-item";
 
 
 export function Projects() {
 	return (
-		<div className="mt-20 flex w-full flex-col gap-4">
-			<div className="mb-3 flex w-full items-end justify-between border-b border-outline pb-2">
-				<h1 className="mb-2 font-label text-4xl font-bold italic">Projects</h1>
+		<section className="flex w-full flex-col gap-4 pt-1">
+			<div className="flex w-full items-end justify-between gap-4 border-b border-border pb-4">
+				<div>
+					<div className="void-section-title">selected projects</div>
+					<h2 className="mt-2 font-headline text-[clamp(2rem,5vw,3.5rem)] leading-none tracking-[-0.03em]">
+						recent work.
+					</h2>
+				</div>
 				<Link
 					href="/projects"
-					className="group hidden items-center gap-1 font-mono text-sm text-primary/90 underline decoration-dashed underline-offset-4 transition-all duration-300 hover:opacity-65 sm:inline-flex"
+					className="void-link hidden text-xs uppercase tracking-[0.18em] text-primary sm:inline-flex"
 				>
-					View all
-					<IoMdArrowForward className="text-primary/90 group-hover:text-primary" />
+					view all ↗
 				</Link>
 			</div>
-			<div className="grid gap-8 md:grid-cols-2">
+			<div className="grid gap-0">
 				{FEATURED_PROJECTS.map((project) => (
 					<ProjectCard key={project.id} project={project} />
 				))}
 			</div>
-		</div>
+		</section>
 	);
 }

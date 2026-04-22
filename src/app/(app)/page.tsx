@@ -9,32 +9,43 @@ import { Socials } from "@/features/portfolio/components/socials";
 
 export default function Page() {
 	return (
-		<div className="root min-h-screen bg-background text-on-background font-body selection:bg-primary-container selection:text-white transition-colors duration-300 grid-pattern">
-			<div className=" flex flex-col px-4 md:px-5">
+		<div className="min-h-screen text-on-background selection:bg-primary selection:text-black transition-colors duration-300">
+			<div className="flex flex-col gap-8 md:gap-10">
 				<Overview />
 				<Socials />
 				<Projects />
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 mb-20 pt-12 md:pt-20">
-					<div className="col-span-1 sm:col-span-1 lg:col-span-3">
-						<ClickCounter />
+				<section className="flex flex-col gap-4 pt-2">
+					<div className="flex items-end justify-between gap-4 border-b border-border pb-4">
+						<div>
+							<div className="void-section-title">writing and activity</div>
+							<h2 className="mt-2 font-headline text-[clamp(1.8rem,4vw,3rem)] leading-none tracking-[-0.03em]">
+								recent signals.
+							</h2>
+						</div>
 					</div>
 
-					<div className="col-span-1 sm:col-span-1 lg:col-span-3">
-						<BasedIn />
-					</div>
+					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12">
+						<div className="col-span-1 lg:col-span-3">
+							<ClickCounter />
+						</div>
 
-					<div className="col-span-1 sm:col-span-2 lg:col-span-6">
-						<GitHubContributions />
-					</div>
+						<div className="col-span-1 lg:col-span-3">
+							<BasedIn />
+						</div>
 
-					<div className="col-span-1 sm:col-span-1 lg:col-span-6 pt-2">
-						<LatestPosts />
-					</div>
+						<div className="col-span-1 sm:col-span-2 lg:col-span-6">
+							<GitHubContributions />
+						</div>
 
-					<div className="col-span-1 sm:col-span-1 lg:col-span-6 pt-2">
-						<RecentCommits />
+						<div className="col-span-1 sm:col-span-2 lg:col-span-7">
+							<LatestPosts />
+						</div>
+
+						<div className="col-span-1 sm:col-span-2 lg:col-span-5">
+							<RecentCommits />
+						</div>
 					</div>
-				</div>
+				</section>
 			</div>
 		</div>
 	);

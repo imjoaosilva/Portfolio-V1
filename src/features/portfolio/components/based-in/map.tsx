@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { IoLocationSharp } from "react-icons/io5";
-import { PiClockLight } from "react-icons/pi";
 
 const LAT = 40.66101;
 const LNG = -7.90971;
@@ -42,8 +40,8 @@ export function BasedInMap() {
 			return;
 		}
 
-		const backgroundColor = readCSSVar("--bg") || "#eff1f5";
-		const primaryColor = readCSSVar("--primary") || "#fab387";
+		const backgroundColor = readCSSVar("--bg") || "#000000";
+		const primaryColor = readCSSVar("--primary") || "#a6e3a1";
 		const [red, green, blue] = parseCSSColor(backgroundColor);
 		const isDark = getLuminance(red, green, blue) < 0.5;
 
@@ -134,7 +132,7 @@ export function BasedInMap() {
 	}, [updateOverlay]);
 
 	return (
-		<div className="h-full relative overflow-hidden">
+		<div className="relative h-full flex-1 overflow-hidden">
 			<div ref={mapRef} className="absolute inset-0" />
 
 			<div
@@ -148,22 +146,22 @@ export function BasedInMap() {
 				style={{ mixBlendMode: "soft-light", zIndex: 401 }}
 			/>
 
-			<div className="absolute top-3 left-3 z-[1000] flex items-center gap-1.5 bg-surface-container-highest/90 backdrop-blur-sm border border-on-background px-2 py-1">
-				<IoLocationSharp style={{ color: "var(--primary)" }} size={11} />
-				<span className="font-label text-[10px] font-bold uppercase tracking-wider">
+			<div className="absolute left-3 top-3 z-[1000] flex items-center gap-1.5 border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
+				<span className="text-primary">▣</span>
+				<span className="text-[10px] uppercase tracking-[0.18em] text-fg">
 					Viseu, Portugal
 				</span>
 			</div>
 
-			<div className="absolute bottom-3 left-3 right-3 z-[1000] flex items-end justify-between">
-				<div className="bg-surface-container-highest/90 backdrop-blur-sm border border-on-background px-2 py-1">
-					<span className="font-mono text-[10px] text-on-surface-variant">
+			<div className="absolute bottom-3 left-3 right-3 z-[1000] flex items-end justify-between gap-2">
+				<div className="border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
+					<span className="font-mono text-[10px] text-fg-dim">
 						{LAT}°N · {Math.abs(LNG)}°W
 					</span>
 				</div>
-				<div className="flex items-center gap-1.5 bg-surface-container-highest/90 backdrop-blur-sm border border-on-background px-2 py-1">
-					<PiClockLight size={11} className="text-on-surface-variant" />
-					<span className="font-mono text-[10px]">{time}</span>
+				<div className="flex items-center gap-1.5 border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
+					<span className="text-fg-dim">◉</span>
+					<span className="font-mono text-[10px] text-fg">{time}</span>
 				</div>
 			</div>
 		</div>

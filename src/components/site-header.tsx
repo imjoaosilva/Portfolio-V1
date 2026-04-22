@@ -7,73 +7,60 @@ import { cn } from "@/utils/cn";
 
 export const SiteHeader = () => {
 	const pathname = usePathname();
-	const segments = pathname === "/" ? [] : pathname.split("/").filter(Boolean);
+	const currentLabel =
+		Menu.find((item) => pathname === item.to || pathname.startsWith(`${item.to}/`))
+			?.label.toLowerCase() ?? "index";
 
 	return (
-		<header className="fixed top-0 z-50 flex h-14 w-full items-center justify-between border-b border-on-background/20 bg-background/90 px-6 backdrop-blur-md transition-colors duration-300">
-			<div className="flex items-center font-label text-sm font-medium leading-none tracking-tight">
-				<Link
-					href="/"
-					className="text-primary transition-colors hover:text-primary/70"
-					aria-label="Go to home"
-				>
-					~
-				</Link>
+		<header className="sticky top-0 z-50 border-b border-border bg-background/92 backdrop-blur-md transition-colors duration-300">
+			<div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
+				<div className="flex min-w-0 items-center gap-3">
+					<Link
+						href="/"
+						className="min-w-0 no-underline"
+						aria-label="Go to home"
+					>
+						<div className="flex min-w-0 items-center gap-2 border border-border bg-bg-panel/70 px-3 py-2">
+							<span className="text-primary">●</span>
+							<div className="min-w-0">
+								<div className="truncate font-mono text-[11px] tracking-[0.08em] text-fg">
+									joao@silva:~$
+								</div>
+								<div className="truncate font-mono text-[10px] text-fg-dim">
+									cd /{currentLabel}
+								</div>
+							</div>
+						</div>
+					</Link>
+				</div>
 
-				{segments.length === 0 ? (
-					<span className="ml-px text-on-background/90">/</span>
-				) : (
-					segments.map((seg, i) => {
-						const segPath = `/${segments.slice(0, i + 1).join("/")}`;
-						const isLast = i === segments.length - 1;
-
+				<nav className="hidden items-center gap-1 border border-border bg-bg-panel/80 p-1 md:flex">
+					{Menu.map((item) => {
+						const isSelected = pathname === item.to;
+						const isChildRoute =
+							item.to !== "/" && pathname.startsWith(`${item.to}/`);
 						return (
-							<span key={segPath} className="flex items-center">
-								<span className="ml-px">/</span>
-								{isLast ? (
-									<span className="ml-px text-on-background">{seg}</span>
-								) : (
-									<Link
-										href={segPath}
-										className="ml-px text-on-background transition-colors hover:text-primary"
-									>
-										{seg}
-									</Link>
+							<Link
+								key={item.label}
+								className={cn(
+									"flex items-center border border-transparent px-3 py-1.5 font-mono text-[11px] transition-colors no-underline",
+									isSelected
+										? "border-primary/40 bg-primary/8 text-primary"
+										: isChildRoute
+											? "text-primary/75 hover:text-primary"
+											: "text-fg-dim hover:bg-bg-raised hover:text-on-background",
 								)}
-							</span>
+								href={item.to}
+							>
+								~/{item.label.toLowerCase()}
+							</Link>
 						);
-					})
-				)}
+					})}
+				</nav>
 
-				<div className="ml-1 h-3.5 w-1 shrink-0 bg-primary/70" />
-			</div>
-
-			<nav className="hidden h-full items-center gap-8 md:flex">
-				{Menu.map((item) => {
-					const isSelected = pathname === item.to;
-					const isChildRoute =
-						item.to !== "/" && pathname.startsWith(`${item.to}/`);
-					return (
-						<Link
-							key={item.label}
-							className={cn(
-								"flex h-full items-center font-mono text-sm font-medium uppercase tracking-tight transition-colors",
-								isSelected
-									? "border-b-2 border-primary text-primary"
-									: isChildRoute
-										? "text-primary/80 hover:text-primary"
-										: "text-on-surface-variant hover:text-on-background",
-							)}
-							href={item.to}
-						>
-							{item.label}
-						</Link>
-					);
-				})}
-			</nav>
-
-			<div className="flex items-center gap-4">
-				<ThemeToggle />
+				<div className="flex items-center gap-3">
+					<ThemeToggle />
+				</div>
 			</div>
 		</header>
 	);

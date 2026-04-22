@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,17 +10,8 @@ import {
 	STORAGE_ACCENT_KEY,
 	STORAGE_THEME_KEY,
 } from "@/config/theme-storage";
-import { Inter, Mono, spaceGrotesk } from "@/libs/fonts";
+import { BodyMono, Display, Mono } from "@/libs/fonts";
 import { cn } from "@/utils/cn";
-
-const jetbrainsMono = JetBrains_Mono({
-	subsets: ["latin"],
-	variable: "--font-mono",
-});
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE_INFO.url),
@@ -103,20 +92,21 @@ export default function RootLayout({
 		<html
 			lang="en"
 			suppressHydrationWarning
-			data-theme="macchiato"
-			data-accent="peach"
+			data-theme="mocha"
+			data-accent="green"
 			data-theme-ready="false"
 			className={cn(
 				"h-full",
 				"antialiased",
-				geistSans.variable,
+				Display.variable,
 				Mono.variable,
-				Inter.variable,
-				spaceGrotesk.variable,
+				BodyMono.variable,
 				"font-mono",
-				jetbrainsMono.variable,
 			)}
 		>
+			<head>
+				<script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+			</head>
 			<body className="min-h-full flex flex-col">
 				<script
 					type="application/ld+json"
@@ -129,16 +119,6 @@ export default function RootLayout({
 					dangerouslySetInnerHTML={{
 						__html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
 					}}
-				/>
-				<link
-					rel="stylesheet"
-					href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-					precedence="default"
-				/>
-				<Script
-					id="theme-boot"
-					strategy="beforeInteractive"
-					dangerouslySetInnerHTML={{ __html: themeBootScript }}
 				/>
 				<ThemeProvider>{children}</ThemeProvider>
 			</body>
