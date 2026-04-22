@@ -132,28 +132,28 @@ export function BasedInMap() {
 	}, [updateOverlay]);
 
 	return (
-		<div className="relative h-full flex-1 overflow-hidden">
-			<div ref={mapRef} className="absolute inset-0" />
+		<div className="relative h-full flex-1 overflow-hidden z-0">
+			<div ref={mapRef} className="absolute inset-0 z-0" />
 
 			<div
 				ref={backgroundOverlayRef}
 				className="absolute inset-0 pointer-events-none"
-				style={{ mixBlendMode: "color", zIndex: 400 }}
+				style={{ mixBlendMode: "color", zIndex: 0 }}
 			/>
 			<div
 				ref={primaryOverlayRef}
 				className="absolute inset-0 pointer-events-none"
-				style={{ mixBlendMode: "soft-light", zIndex: 401 }}
+				style={{ mixBlendMode: "soft-light", zIndex: 1 }}
 			/>
 
-			<div className="absolute left-3 top-3 z-[1000] flex items-center gap-1.5 border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
+			<div className="absolute left-3 top-3 z-10 flex items-center gap-1.5 border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
 				<span className="text-primary">▣</span>
 				<span className="text-[10px] uppercase tracking-[0.18em] text-fg">
 					Viseu, Portugal
 				</span>
 			</div>
 
-			<div className="absolute bottom-3 left-3 right-3 z-[1000] flex items-end justify-between gap-2">
+			<div className="absolute bottom-3 left-3 right-3 z-10 flex items-end justify-between gap-2">
 				<div className="border border-border bg-bg-panel/90 px-2 py-1 backdrop-blur-sm">
 					<span className="font-mono text-[10px] text-fg-dim">
 						{LAT}°N · {Math.abs(LNG)}°W

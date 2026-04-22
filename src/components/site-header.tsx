@@ -1,18 +1,35 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu } from "@/config/menu";
 import { cn } from "@/utils/cn";
 
 export const SiteHeader = () => {
 	const pathname = usePathname();
+	const [isScrolled, setIsScrolled] = useState(false);
 	const currentLabel =
 		Menu.find((item) => pathname === item.to || pathname.startsWith(`${item.to}/`))
 			?.label.toLowerCase() ?? "index";
 
+	useEffect(() => {
+		const handleScroll = () => setIsScrolled(window.scrollY > 24);
+
+		handleScroll();
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
 	return (
-		<header className="sticky top-0 z-50 border-b border-border bg-background/92 backdrop-blur-md transition-colors duration-300">
+		<header
+			className={cn(
+				"sticky top-0 z-60 border-b transition-all duration-300",
+				isScrolled
+					? "bg-background/90 border-border/40 shadow-[0_16px_60px_-50px_rgba(0,0,0,0.35)]"
+					: "bg-black/10 border-border/10",
+			)}
+		>
 			<div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
 				<div className="flex min-w-0 items-center gap-3">
 					<Link

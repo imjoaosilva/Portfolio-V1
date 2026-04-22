@@ -62,6 +62,31 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+html {
+    scrollbar-color: var(--primary) transparent;
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--primary) 80%, black 20%);
+}
+
 [data-theme="latte"] {
     --bg: #f3f2ee;
     --bg-panel: #ebe9e3;
@@ -306,7 +331,7 @@ a:hover {
 
 .void-shell::before {
     content: "";
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     background-image:
